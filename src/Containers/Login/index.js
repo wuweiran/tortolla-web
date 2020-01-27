@@ -35,6 +35,7 @@ class NormalLoginForm extends React.Component {
                         }
                     })
                     .catch((error) => {
+                        this.setState({ loading: false });
                         console.error(error);
                     });
             }
@@ -118,7 +119,7 @@ class NormalRegisterForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.setState({ loading: true });
-                fetch('/bloggers/login', {
+                fetch('/bloggers/register', {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -127,19 +128,21 @@ class NormalRegisterForm extends React.Component {
                     body: JSON.stringify({
                         username: values.username,
                         password: values.password,
+                        realname: values.realname,
                     }),
                 })
                     .then((response) => response.json())
                     .then((responseJson) => {
                         this.setState({ loading: false });
                         if (responseJson.status === 1) {
-                            console.log("login failed");
+                            console.log("register failed");
                         } else {
                             cookie.save("token", responseJson.resultBody);
                             saveLoginUserFromToken(responseJson.resultBody, this.props.onComplete);
                         }
                     })
                     .catch((error) => {
+                        this.setState({ loading: false });
                         console.error(error);
                     });
             }
@@ -201,13 +204,6 @@ class NormalRegisterForm extends React.Component {
                         />)}
                 </Form.Item>
                 <Form.Item>
-                    {getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: true,
-                    })(<Checkbox>Remember me</Checkbox>)}
-                    <a href="" style={{ float: 'right' }}>
-                        Forgot password?
-                    </a>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={this.state.loading}>
                         Register
                     </Button>
@@ -259,7 +255,7 @@ export class LoginButton extends React.Component {
                         onOk={this.handleOk}
                         onCancel={this.handleCancel}
                         footer={[
-                            <Button onClick={this.toggle} type='link'>Register now!</Button>,
+                            <Button key="toggle" onClick={this.toggle} type='link'>Register now!</Button>,
                             <Button key="back" onClick={this.handleCancel}>Back</Button>,
                         ]}
                     >
@@ -279,7 +275,7 @@ export class LoginButton extends React.Component {
                         onOk={this.handleOk}
                         onCancel={this.handleCancel}
                         footer={[
-                            <Button onClick={this.toggle} type='link'>Already have an account? Login</Button>,
+                            <Button key="toggle" onClick={this.toggle} type='link'>Already have an account? Login</Button>,
                             <Button key="back" onClick={this.handleCancel}>Back</Button>,
                         ]}
                     >

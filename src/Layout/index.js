@@ -5,6 +5,7 @@ import { LoginButton } from '../Containers/Login';
 import Home from '../Containers/Home';
 import Explore from '../Containers/Explore';
 import CreatePost from '../Containers/CreatePost';
+import UserInfo from '../Containers/UserInfo';
 import { isLogin, loginUser, logout } from '../User';
 
 const { Header, Footer, Content } = Layout;
@@ -68,20 +69,25 @@ class UserPanel extends React.Component {
 
     handleClick = e => {
         console.log(e);
-        if (e.key === "3") {
-            logout();
-            window.location.reload();
+        switch(e.key) {
+            case "1":
+                ReactDOM.render(<UserInfo/>, document.getElementById('site-content'));
+                break;
+            case "3":
+                logout();
+                window.location.reload();
+                break;
+            default:
+                console.error(e.key);
         }
     }
 
     menu = (
         <Menu onClick={this.handleClick}>
-            <Menu.Item key="0">
-                <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-                    用户信息
-            </a>
-            </Menu.Item>
             <Menu.Item key="1">
+                User Info
+            </Menu.Item>
+            <Menu.Item key="2">
                 <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
                     我的收藏
             </a>
