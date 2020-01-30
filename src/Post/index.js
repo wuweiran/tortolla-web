@@ -37,9 +37,9 @@ export class NormalPost extends React.Component {
             let src = element.getElementsByTagName("img").item(0).src;
             let descEle = element.getElementsByTagName("figcaption").item(0);
             if (descEle == null) {
-                ReactDOM.render(<Zmage src={src} style={{"max-height":"300px"}}/>, element);
+                ReactDOM.render(<Zmage src={src} style={{"maxHeight":"300px"}}/>, element);
             } else {
-                ReactDOM.render(<Zmage src={src} alt={descEle.innerText} style={{"max-height":"300px"}}/>, element);
+                ReactDOM.render(<Zmage src={src} alt={descEle.innerText} style={{"maxHeight":"300px"}}/>, element);
             }
             
         }

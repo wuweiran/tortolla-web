@@ -12,13 +12,11 @@ export default class Explore extends React.Component {
     componentDidMount = () => {
         const { userId } = this.props;
         if (userId == null) {
-            console.error("fuck?");
             this.setState({ user: loginUser(), loading: false });
         }
     }
     render() {
         const { user, loading } = this.state;
-        console.log(user);
         return (
             <Skeleton loading={loading}>
                 <Descriptions title="User Info" bordered>

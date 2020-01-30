@@ -13,7 +13,7 @@ const { Header, Footer, Content } = Layout;
 export default class SiteLayout extends React.Component {
     handleSelect = e => {
         const elementMap = {
-            "home": <Home/>,
+            "home": <Home />,
             "explore": <Explore />,
             "create": <CreatePost />,
         }
@@ -21,9 +21,27 @@ export default class SiteLayout extends React.Component {
     };
 
     handleClick = e => {
-        console.log(e);
+        switch (e.key) {
+            case "1":
+                ReactDOM.render(<UserInfo />, document.getElementById('site-content'));
+                break;
+            case "3":
+                logout();
+                window.location.reload();
+                break;
+            default:
+                console.error(e.key);
+        }
     };
 
+    userMenu = (
+        <Menu onClick={this.handleClick}>
+            <Menu.Item key="1">User Info</Menu.Item>
+            <Menu.Item key="2">我的收藏</Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="3">Log out</Menu.Item>
+        </Menu>
+    );
 
     render() {
         return (
@@ -48,70 +66,25 @@ export default class SiteLayout extends React.Component {
                             <Icon type="file-add" />
                             Create Post
                         </Menu.Item>
-                        <UserPanel />
+                        {isLogin() ?
+                            <Dropdown overlay={this.userMenu} placement="bottomLeft">
+                                <span><Avatar shape="square" />
+                                    {loginUser().username}</span>
+                            </Dropdown> :
+                            <LoginButton type="link" />}
                     </Menu>
                 </Header>
-                <Content>
+                <Content style={{ padding: '0 50px' }}>
                     <div id="site-content">
                         Hello!
                     </div>
                 </Content>
                 <Footer>
                     <Language />
-                    ©2019 Midnight1000
+                    Tortolla ©2019 Created by Midnight1000
                 </Footer>
             </Layout>
         )
-    }
-}
-
-class UserPanel extends React.Component {
-
-    handleClick = e => {
-        console.log(e);
-        switch(e.key) {
-            case "1":
-                ReactDOM.render(<UserInfo/>, document.getElementById('site-content'));
-                break;
-            case "3":
-                logout();
-                window.location.reload();
-                break;
-            default:
-                console.error(e.key);
-        }
-    }
-
-    menu = (
-        <Menu onClick={this.handleClick}>
-            <Menu.Item key="1">
-                User Info
-            </Menu.Item>
-            <Menu.Item key="2">
-                <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                    我的收藏
-            </a>
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key="3">
-                登出
-            </Menu.Item>
-        </Menu>
-    );
-
-    render() {
-        if (!isLogin()) {
-            return (
-                <LoginButton type="link">登录</LoginButton>
-            )
-        } else {
-            return (
-                <Dropdown overlay={this.menu} placement="bottomLeft">
-                    <span><Avatar shape="square" />
-                        {loginUser().username}</span>
-                </Dropdown>
-            )
-        }
     }
 }
 
@@ -126,7 +99,7 @@ class Language extends React.Component {
                 labelInValue
                 defaultValue={{ key: 'en-us' }}
                 style={{ width: 120 }}
-                onChange={ this.handleChange }
+                onChange={this.handleChange}
             >
                 <Select.Option value="zh-cn">中文(中国)</Select.Option>
                 <Select.Option value="en-us">English(US)</Select.Option>
