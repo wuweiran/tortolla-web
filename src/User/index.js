@@ -22,7 +22,7 @@ export const saveLoginUserFromToken = (token, callback) => {
         .then((response) => response.json())
         .then((responseJson) => {
             if (responseJson.status === 1) {
-                console.log("bad token");
+                console.error("bad token");
             } else {
                 cookie.save("current-user", responseJson.resultBody);
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { loginUserToken, isLogin } from '../../User';
@@ -15,11 +15,6 @@ export class NormalPostForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.setState({ loading: true });
-                console.log({
-                    token: loginUserToken(),
-                    title: values.title,
-                    body: values.body,
-                });
                 fetch('/posts/create', {
                     method: 'POST',
                     headers: {
@@ -36,9 +31,10 @@ export class NormalPostForm extends React.Component {
                     .then((responseJson) => {
                         this.setState({ loading: false });
                         if (responseJson.status === 1) {
-                            console.log("post failed");
+                            message.log("Post failed!");
                         } else {
-                            //this.props.onComplete();
+                            message.log("Post succeeded!");
+                            this.props.onComplete();
                         }
                     })
                     .catch((error) => {
@@ -68,14 +64,14 @@ export class NormalPostForm extends React.Component {
                         },
                         valuePropName: "data",
                         initialValue: "<p>Hello from CKEditor 5!</p>",
-                        rules: [{ required: true, message: 'At least 15 characters!' }],
+                        rules: [{ required: true, message: 'Must write something!' }],
                     })(
                         <CKEditor
                             editor={ClassicEditor}
                             config={{
                                 language: 'en-us',
                                 ckfinder: {
-                                    uploadUrl: "/posts/uploadImage"
+                                    uploadUrl: "/posts/upload_image"
                                 }
                             }}
                             onInit={editor => {
@@ -112,7 +108,7 @@ export default class CreatePost extends React.Component {
     render() {
         if (!isLogin()) {
             return (
-                <div>请先登录</div>
+                <div>Login first, please.</div>
             )
         }
         return (

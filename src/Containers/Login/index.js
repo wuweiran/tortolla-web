@@ -1,6 +1,6 @@
 import React from 'react';
 import cookie from 'react-cookies';
-import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Modal, message } from 'antd';
 import { saveLoginUserFromToken } from '../../User';
 
 class NormalLoginForm extends React.Component {
@@ -28,8 +28,9 @@ class NormalLoginForm extends React.Component {
                     .then((responseJson) => {
                         this.setState({ loading: false });
                         if (responseJson.status === 1) {
-                            console.log("login failed");
+                            message.info("Login failed");
                         } else {
+                            message.info("Login succeeded!");
                             cookie.save("token", responseJson.resultBody);
                             saveLoginUserFromToken(responseJson.resultBody, this.props.onComplete);
                         }
@@ -135,7 +136,7 @@ class NormalRegisterForm extends React.Component {
                     .then((responseJson) => {
                         this.setState({ loading: false });
                         if (responseJson.status === 1) {
-                            console.log("register failed");
+                            message.log("Register failed!");
                         } else {
                             cookie.save("token", responseJson.resultBody);
                             saveLoginUserFromToken(responseJson.resultBody, this.props.onComplete);

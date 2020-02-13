@@ -1,29 +1,38 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Layout, Menu, Icon, Avatar, Dropdown, Select } from 'antd';
+import { Layout, Menu, Icon, Avatar, Dropdown, Select, Empty } from 'antd';
 import { LoginButton } from '../Containers/Login';
 import Home from '../Containers/Home';
 import Explore from '../Containers/Explore';
 import CreatePost from '../Containers/CreatePost';
+import Latest from '../Containers/Latest';
 import UserInfo from '../Containers/UserInfo';
 import { isLogin, loginUser, logout } from '../User';
+import logoImg from '../site-logo.png';
 
 const { Header, Footer, Content } = Layout;
 
 export default class SiteLayout extends React.Component {
+    state = {
+        content: <Empty />
+    }
+
     handleSelect = e => {
         const elementMap = {
             "home": <Home />,
             "explore": <Explore />,
             "create": <CreatePost />,
+            "latest": <Latest />,
         }
-        ReactDOM.render(elementMap[e.key], document.getElementById('site-content'));
+        this.setState({ content: elementMap[e.key] });
     };
 
     handleClick = e => {
         switch (e.key) {
             case "1":
-                ReactDOM.render(<UserInfo />, document.getElementById('site-content'));
+                this.setState({ content: <UserInfo /> });
+                break;
+            case "2":
+                this.setState({ content: <Empty /> });
                 break;
             case "3":
                 logout();
@@ -47,7 +56,13 @@ export default class SiteLayout extends React.Component {
         return (
             <Layout>
                 <Header>
-                    <div className="logo" />
+                    <div className="logo">
+                        <img src={logoImg} alt="Sit Logo" style={{
+                            height: "47px",
+                            margin: "8px 24px 8px 0",
+                            float: "left"
+                        }} />
+                    </div>
                     <Menu
                         theme="dark"
                         mode="horizontal"
@@ -62,6 +77,10 @@ export default class SiteLayout extends React.Component {
                             <Icon type="compass" />
                             Explore
                         </Menu.Item>
+                        <Menu.Item key="latest">
+                            <Icon type="shake" />
+                            Latest
+                        </Menu.Item>
                         <Menu.Item key="create">
                             <Icon type="file-add" />
                             Create Post
@@ -74,14 +93,12 @@ export default class SiteLayout extends React.Component {
                             <LoginButton type="link" />}
                     </Menu>
                 </Header>
-                <Content style={{ padding: '0 50px' }}>
-                    <div id="site-content">
-                        Hello!
-                    </div>
+                <Content style={{ padding: '10px 50px' }}>
+                    {this.state.content}
                 </Content>
                 <Footer>
-                    <Language />
                     Tortolla ©2019 Created by Midnight1000
+                    <Language />
                 </Footer>
             </Layout>
         )
@@ -95,15 +112,19 @@ class Language extends React.Component {
 
     render() {
         return (
-            <Select
-                labelInValue
-                defaultValue={{ key: 'en-us' }}
-                style={{ width: 120 }}
-                onChange={this.handleChange}
-            >
-                <Select.Option value="zh-cn">中文(中国)</Select.Option>
-                <Select.Option value="en-us">English(US)</Select.Option>
-            </Select>
+            <div>
+                <Icon type="global" />
+                <Select
+                    labelInValue
+                    defaultValue={{ key: 'en-us' }}
+                    style={{ width: 120 }}
+                    onChange={this.handleChange}
+                >
+                    <Select.Option value="zh-cn">中文(中国)</Select.Option>
+                    <Select.Option value="en-us">English(US)</Select.Option>
+                </Select>
+            </div>
+
         )
     }
 }

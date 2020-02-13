@@ -1,6 +1,6 @@
 # Tortolla-Web
 
-Source code of front-end web view of Tortolla(https://github.com/wuweiran/tortolla), a personal blog system.
+Source code of front-end of [Tortolla](https://github.com/wuweiran/tortolla), a personal blog system.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
