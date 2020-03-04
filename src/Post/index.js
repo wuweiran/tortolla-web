@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Zmage from 'react-zmage'
-import { Card, Icon, Tooltip } from 'antd';
+import { Card, Tooltip } from 'antd';
+import { LikeOutlined, DislikeOutlined, StarOutlined, EditOutlined, SettingOutlined, EllipsisOutlined} from '@ant-design/icons';
 import moment from 'moment';
 
 export class NormalPost extends React.Component {
@@ -56,12 +57,12 @@ export class NormalPost extends React.Component {
                         <span>{momentVal.fromNow()}</span>
                     </Tooltip>}
                 actions={[
-                    <Icon type="like" key="like" />,
-                    <Icon type="dislike" key="dislike" />,
-                    <Icon type="star" key="fav" />,
-                    <Icon type="edit" key="edit" />,
-                    <Icon type="setting" key="setting" />,
-                    <Icon type="ellipsis" key="ellipsis" />,
+                    <LikeOutlined key="like" />,
+                    <DislikeOutlined key="dislike" />,
+                    <StarOutlined key="fav" />,
+                    <EditOutlined key="edit" />,
+                    <SettingOutlined key="setting" />,
+                    <EllipsisOutlined key="ellipsis" />,
                 ]}
                 ref="self"
             >

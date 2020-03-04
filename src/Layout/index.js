@@ -1,5 +1,6 @@
 import React from 'react';
-import { Layout, Menu, Icon, Avatar, Dropdown, Select, Empty } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Select, Empty } from 'antd';
+import { HomeOutlined, ShakeOutlined, CompassOutlined, FileAddOutlined, GlobalOutlined } from '@ant-design/icons';
 import { LoginButton } from '../Containers/Login';
 import Home from '../Containers/Home';
 import Explore from '../Containers/Explore';
@@ -70,19 +71,19 @@ export default class SiteLayout extends React.Component {
                         style={{ lineHeight: '64px' }}
                     >
                         <Menu.Item key="home">
-                            <Icon type="home" />
+                            <HomeOutlined />
                             Home
                         </Menu.Item>
                         <Menu.Item key="explore">
-                            <Icon type="compass" />
+                            <CompassOutlined />
                             Explore
                         </Menu.Item>
                         <Menu.Item key="latest">
-                            <Icon type="shake" />
+                            <ShakeOutlined />
                             Latest
                         </Menu.Item>
                         <Menu.Item key="create">
-                            <Icon type="file-add" />
+                            <FileAddOutlined />
                             Create Post
                         </Menu.Item>
                         {isLogin() ?
@@ -113,7 +114,7 @@ class Language extends React.Component {
     render() {
         return (
             <div>
-                <Icon type="global" />
+                <GlobalOutlined />
                 <Select
                     labelInValue
                     defaultValue={{ key: 'en-us' }}
