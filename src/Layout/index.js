@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Dropdown, Select, Empty } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Select, Empty, Divider } from 'antd';
 import { HomeOutlined, ShakeOutlined, CompassOutlined, FileAddOutlined, GlobalOutlined } from '@ant-design/icons';
 import { LoginButton } from '../Containers/Login';
 import Home from '../Containers/Home';
@@ -74,7 +74,7 @@ export default class SiteLayout extends React.Component {
                             <HomeOutlined />
                             Home
                         </Menu.Item>
-                        <Menu.Item key="explore">
+                        <Menu.Item key="explore" disabled={true}>
                             <CompassOutlined />
                             Explore
                         </Menu.Item>
@@ -86,6 +86,7 @@ export default class SiteLayout extends React.Component {
                             <FileAddOutlined />
                             Create Post
                         </Menu.Item>
+                        <Divider type='vertical' />
                         {isLogin() ?
                             <Dropdown overlay={this.userMenu} placement="bottomLeft">
                                 <span><Avatar shape="square" />
@@ -98,7 +99,7 @@ export default class SiteLayout extends React.Component {
                     {this.state.content}
                 </Content>
                 <Footer>
-                    Tortolla ©2019 Created by Midnight1000
+                    Tortolla ©2019-2020 Created by Midnight1000
                     <Language />
                 </Footer>
             </Layout>
