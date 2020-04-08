@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import { Layout, Menu, Avatar, Dropdown, Select, Empty, Divider } from 'antd';
 import { HomeOutlined, ShakeOutlined, CompassOutlined, FileAddOutlined, GlobalOutlined } from '@ant-design/icons';
 import { LoginButton } from '../Containers/Login';
@@ -13,96 +14,100 @@ import logoImg from '../site-logo.png';
 const { Header, Footer, Content } = Layout;
 
 export default class SiteLayout extends React.Component {
-    state = {
-        content: <Empty />
-    }
-
-    handleSelect = e => {
-        const elementMap = {
-            "home": <Home />,
-            "explore": <Explore />,
-            "create": <CreatePost />,
-            "latest": <Latest />,
-        }
-        this.setState({ content: elementMap[e.key] });
-    };
 
     handleClick = e => {
         switch (e.key) {
-            case "1":
-                this.setState({ content: <UserInfo /> });
-                break;
-            case "2":
-                this.setState({ content: <Empty /> });
-                break;
-            case "3":
+            case "logout":
                 logout();
                 window.location.reload();
                 break;
             default:
-                console.error(e.key);
         }
     };
 
     userMenu = (
         <Menu onClick={this.handleClick}>
-            <Menu.Item key="1">User Info</Menu.Item>
-            <Menu.Item key="2">我的收藏</Menu.Item>
+            <Menu.Item>
+                <Link to={'/user/info'}>
+                    User info
+                </Link>
+            </Menu.Item>
+            <Menu.Item>
+                <Link to={'/user/fav'}>
+                    My favorite
+                </Link>
+            </Menu.Item>
             <Menu.Divider />
-            <Menu.Item key="3">Log out</Menu.Item>
+            <Menu.Item key="logout">Log out</Menu.Item>
         </Menu>
     );
 
     render() {
         return (
-            <Layout>
-                <Header>
-                    <div className="logo">
-                        <img src={logoImg} alt="Sit Logo" style={{
-                            height: "47px",
-                            margin: "8px 24px 8px 0",
-                            float: "left"
-                        }} />
-                    </div>
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        onSelect={this.handleSelect}
-                        style={{ lineHeight: '64px' }}
-                    >
-                        <Menu.Item key="home">
-                            <HomeOutlined />
-                            Home
-                        </Menu.Item>
-                        <Menu.Item key="explore" disabled={true}>
-                            <CompassOutlined />
-                            Explore
-                        </Menu.Item>
-                        <Menu.Item key="latest">
-                            <ShakeOutlined />
-                            Latest
-                        </Menu.Item>
-                        <Menu.Item key="create">
-                            <FileAddOutlined />
-                            Create Post
-                        </Menu.Item>
-                        <Divider type='vertical' />
-                        {isLogin() ?
-                            <Dropdown overlay={this.userMenu} placement="bottomLeft">
-                                <span><Avatar shape="square" />
-                                    {loginUser().username}</span>
-                            </Dropdown> :
-                            <LoginButton type="link" />}
-                    </Menu>
-                </Header>
-                <Content style={{ padding: '10px 50px' }}>
-                    {this.state.content}
-                </Content>
-                <Footer>
-                    Tortolla ©2019-2020 Created by Midnight1000
+            <BrowserRouter>
+                <Layout>
+                    <Header>
+                        <div className="logo">
+                            <img src={logoImg} alt="Sit Logo" style={{
+                                height: "47px",
+                                margin: "8px 24px 8px 0",
+                                float: "left"
+                            }} />
+                        </div>
+                        <Menu
+                            theme="dark"
+                            mode="horizontal"
+                            style={{ lineHeight: '64px' }}
+                        >
+                            <Menu.Item>
+                                <Link to={'/home'}>
+                                    <HomeOutlined />
+                                    Home
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item disabled={true}>
+                                <Link to={'/post/explore'}>
+                                    <CompassOutlined />
+                                    Explore
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <Link to={'/post/latest'}>
+                                    <ShakeOutlined />
+                                    Latest
+                                </Link>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <Link to={'/post/create'}>
+                                    <FileAddOutlined />
+                                    Create Post
+                                </Link>
+                            </Menu.Item>
+                            <Divider type='vertical' />
+                            {isLogin() ?
+                                <Dropdown overlay={this.userMenu} placement="bottomLeft">
+                                    <span><Avatar shape="square" />
+                                        {loginUser().username}</span>
+                                </Dropdown> :
+                                <LoginButton type="link" />}
+                        </Menu>
+                    </Header>
+                    <Content style={{ padding: '10px 50px' }}>
+                        <Switch>
+                            <Route exact path='/' component={Empty} />
+                            <Route exact path='/home' component={Home} />
+                            <Route exact path='/post/explore' component={Explore} />
+                            <Route exact path='/post/latest' component={Latest} />
+                            <Route exact path='/post/create' component={CreatePost} />
+                            <Route exact path='/user/info' component={UserInfo} />
+                        </Switch>
+                    </Content>
+                    <Footer>
+                        Tortolla ©2019-2020 Created by Midnight1000
                     <Language />
-                </Footer>
-            </Layout>
+                    </Footer>
+                </Layout>
+            </BrowserRouter>
         )
     }
 }

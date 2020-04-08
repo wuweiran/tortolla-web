@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Zmage from 'react-zmage'
-import { Card, Tooltip } from 'antd';
-import { LikeOutlined, DislikeOutlined, StarOutlined, EditOutlined, SettingOutlined, EllipsisOutlined} from '@ant-design/icons';
+import { Card, Tooltip, Skeleton } from 'antd';
+import { LikeOutlined, DislikeOutlined, StarOutlined, EditOutlined, SettingOutlined, EllipsisOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
 export class NormalPost extends React.Component {
 
     state = {
+        loading: true,
         title: '',
         createdTime: '',
         content: '',
@@ -20,6 +21,7 @@ export class NormalPost extends React.Component {
             .then(
                 (post) => {
                     t.setState({
+                        loading: false,
                         title: post.title,
                         createdTime: post.createdTime,
                         content: post.body,
@@ -66,7 +68,9 @@ export class NormalPost extends React.Component {
                 ]}
                 ref="self"
             >
-                <p dangerouslySetInnerHTML={{ __html: this.state.content }}></p>
+                <Skeleton loading={this.state.loading} active={true}>
+                    <p dangerouslySetInnerHTML={{ __html: this.state.content }}></p>
+                </Skeleton>
             </Card>
         )
     }

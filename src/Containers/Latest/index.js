@@ -1,21 +1,19 @@
 import React from 'react';
-import { BackTop, Divider, Pagination } from 'antd';
+import { BackTop, Space, Pagination, Spin, Divider } from 'antd';
 import { NormalPost } from '../../Post';
 
 class PostList extends React.Component {
     render() {
         const { posts } = this.props;
         return (
-            <div>
+            <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 {posts.map((postId, i) =>
-                    <div key={i}>
-                        <NormalPost
-                            postId={postId}>
-                        </NormalPost>
-                        <Divider />
-                    </div>
+                    <NormalPost
+                        postId={postId}>
+                    </NormalPost>
                 )}
-            </div>
+                <Divider />
+            </Space>
         )
     }
 }
@@ -67,7 +65,9 @@ export default class Latest extends React.Component {
         return (
             <div>
                 <BackTop />
-                <PostList posts={this.state.posts} />
+                <Spin spinning={this.state.disabled} size="large">
+                    <PostList posts={this.state.posts} />
+                </Spin>
                 <Pagination
                     current={this.state.current}
                     disabled={this.state.disabled}
