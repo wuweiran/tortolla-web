@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { loginUserToken, isLogin } from '../../User';
+import { loadLoginUserToken, isLogin } from '../../User';
 
 export class NormalPostForm extends React.Component {
 
@@ -19,7 +19,7 @@ export class NormalPostForm extends React.Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                token: loginUserToken(),
+                token: loadLoginUserToken(),
                 title: values.title,
                 body: values.body,
             }),

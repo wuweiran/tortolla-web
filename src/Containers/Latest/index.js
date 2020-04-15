@@ -9,6 +9,7 @@ class PostList extends React.Component {
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 {posts.map((postId, i) =>
                     <NormalPost
+                        key={i}
                         postId={postId}>
                     </NormalPost>
                 )}
@@ -38,19 +39,22 @@ export default class Latest extends React.Component {
         });
         let t = this;
         fetch("/posts/list_top?pageNum=" + current + "&pageSize=" + pageSize, { method: 'GET' })
+            .then((res) => res.json())
+            .then((res) => res.resultBody)
             .then(
-                function (res) {
-                    res.json().then(function (pageInfo) {
-                        t.setState({
-                            posts: pageInfo.list,
-                            total: pageInfo.total,
-                            current: pageInfo.pageNum,
-                            pageSize: pageInfo.pageSize,
-                            disabled: false,
-                        });
-                    }
-                    )
-                });
+                (pageInfo) => {
+                    t.setState({
+                        posts: pageInfo.list,
+                        total: pageInfo.total,
+                        current: pageInfo.pageNum,
+                        pageSize: pageInfo.pageSize,
+                        disabled: false,
+                    });
+                }
+            )
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     onChange = (page, pageSize) => {
@@ -77,6 +81,7 @@ export default class Latest extends React.Component {
                     total={this.state.total}
                     onChange={this.onChange}
                     onShowSizeChange={this.onShowSizeChange}
+                    style={{ textAlign: 'center' }}
                 />
             </div>
         )

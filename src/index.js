@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import 'normalize.css';
-import SiteLayout from './Layout';
+import Main from './Main';
 
 document.addEventListener('DOMContentLoaded', function () {
 
     ReactDOM.render(
-        <SiteLayout/>
-        ,
+        <Main />,
         document.getElementById('root')
 
     );
 
 });
+

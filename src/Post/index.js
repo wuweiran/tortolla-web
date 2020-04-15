@@ -7,8 +7,11 @@ import moment from 'moment';
 
 export class NormalPost extends React.Component {
 
+    unmounted = false;
+
     state = {
         loading: true,
+        authorName: '',
         title: '',
         createdTime: '',
         content: '',
@@ -18,20 +21,43 @@ export class NormalPost extends React.Component {
         let t = this;
         fetch("/posts?id=" + this.props.postId, { method: 'GET' })
             .then((res) => res.json())
+            .then((res) => res.resultBody)
             .then(
                 (post) => {
-                    t.setState({
-                        loading: false,
-                        title: post.title,
-                        createdTime: post.createdTime,
-                        content: post.body,
-                    });
+                    if (t.unmounted === false) {
+                        t.setState({
+                            loading: false,
+                            title: post.title,
+                            createdTime: post.createdTime,
+                            content: post.body,
+                        });
+                        fetch("/bloggers/author?id=" + post.authorId, { method: 'GET' })
+                            .then((res) => res.json())
+                            .then((res) => res.resultBody)
+                            .then(
+                                (author) => {
+                                    if (t.unmounted === false) {
+                                        t.setState({
+                                            authorName: author.username
+                                        });
+                                    }
+                                }
+                            )
+                            .catch((error) => {
+                                console.error(error);
+                            });
+                    }
                 }
             )
             .catch((error) => {
                 console.error(error);
             });
+
     };
+
+    componentWillUnmount = () => {
+        this.unmounted = true;
+    }
 
     componentDidUpdate = () => {
         let domNode = ReactDOM.findDOMNode(this.refs.self);
@@ -53,11 +79,17 @@ export class NormalPost extends React.Component {
         const momentVal = moment(this.state.createdTime);
         return (
             <Card
-                title={this.state.title}
+                title={
+                    <Card.Meta
+                        title={this.state.title}
+                        description={this.state.authorName}
+                    />
+                }
                 extra={
                     <Tooltip title={momentVal.format('YYYY-MM-DD HH:mm:ss')}>
                         <span>{momentVal.fromNow()}</span>
-                    </Tooltip>}
+                    </Tooltip>
+                }
                 actions={[
                     <LikeOutlined key="like" />,
                     <DislikeOutlined key="dislike" />,

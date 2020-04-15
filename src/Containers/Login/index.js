@@ -1,8 +1,8 @@
 import React from 'react';
-import cookie from 'react-cookies';
 import { Form, Input, Button, Checkbox, Modal, message } from 'antd';
 import { UserOutlined, LockOutlined, CheckOutlined, ContactsOutlined } from '@ant-design/icons';
-import { saveLoginUserFromToken } from '../../User';
+import { saveLoginUserToken, saveLoginUserFromToken } from '../../User';
+import { FormattedMessage } from 'react-intl';
 
 class NormalLoginForm extends React.Component {
     state = {
@@ -29,7 +29,7 @@ class NormalLoginForm extends React.Component {
                     message.info("Login failed");
                 } else {
                     message.info("Login succeeded!");
-                    cookie.save("token", responseJson.resultBody);
+                    saveLoginUserToken(responseJson.resultBody);
                     saveLoginUserFromToken(responseJson.resultBody, this.props.onComplete);
                 }
             })
@@ -42,13 +42,21 @@ class NormalLoginForm extends React.Component {
     render() {
         return (
             <Form onFinish={this.onFinish} initialValues={{ remember: true }}>
-                <Form.Item name='username' rules={[{ required: true, message: "Please input your username!" }]}>
+                <Form.Item
+                    name='username'
+                    label={<FormattedMessage id="auth.USERNAME" />}
+                    rules={[{ required: true}]}
+                >
                     <Input
                         prefix={<UserOutlined />}
                         placeholder="Username"
                     />
                 </Form.Item>
-                <Form.Item name='password' rules={[{ required: true, message: 'Please input your Password!' }]}>
+                <Form.Item
+                    name='password'
+                    label={<FormattedMessage id="auth.PASSWORD" />}
+                    rules={[{ required: true}]}
+                >
                     <Input
                         prefix={<LockOutlined />}
                         type="password"
@@ -57,15 +65,15 @@ class NormalLoginForm extends React.Component {
                 </Form.Item>
                 <Form.Item>
                     <Form.Item name='remember' valuePropName='checked' noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox><FormattedMessage id="auth.REMEMBER" /></Checkbox>
                     </Form.Item>
-                    <a href="" style={{ float: 'right' }}>
-                        Forgot password?
+                    <a href="/user/register" style={{ float: 'right' }}>
+                        <FormattedMessage id="auth.FORGOT" />
                     </a>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={this.state.loading}>
-                        Log in
+                        <FormattedMessage id="auth.LOG_IN" />
                     </Button>
                 </Form.Item>
             </Form>
@@ -121,7 +129,7 @@ class NormalRegisterForm extends React.Component {
                 if (responseJson.status === 1) {
                     message.info("Register failed!");
                 } else {
-                    cookie.save("token", responseJson.resultBody);
+                    saveLoginUserToken(responseJson.resultBody);
                     saveLoginUserFromToken(responseJson.resultBody, this.props.onComplete);
                 }
             })
@@ -134,7 +142,8 @@ class NormalRegisterForm extends React.Component {
     render() {
         return (
             <Form onFinish={this.onFinish}>
-                <Form.Item label="Username"
+                <Form.Item
+                    label={<FormattedMessage id="auth.USERNAME" />}
                     name='username'
                     rules={[
                         { required: true, message: 'Please input your username!' },
@@ -145,7 +154,9 @@ class NormalRegisterForm extends React.Component {
                         prefix={<UserOutlined />}
                     />
                 </Form.Item>
-                <Form.Item label="Password" hasFeedback name='password'
+                <Form.Item
+                    label={<FormattedMessage id="auth.PASSWORD" />} hasFeedback
+                    name='password'
                     rules={[
                         {
                             required: true, message: 'Please input your Password!'
@@ -158,7 +169,9 @@ class NormalRegisterForm extends React.Component {
                         prefix={<LockOutlined />}
                     />
                 </Form.Item>
-                <Form.Item label="Confirm password" hasFeedback name='confirm'
+                <Form.Item
+                    label={<FormattedMessage id="auth.PASSWORD_CONFIRM" />} hasFeedback 
+                    name='confirm'
                     rules={[
                         {
                             required: true,
@@ -173,14 +186,14 @@ class NormalRegisterForm extends React.Component {
                         prefix={<CheckOutlined />}
                     />
                 </Form.Item>
-                <Form.Item label="Real name" name='realname'>
+                <Form.Item label={<FormattedMessage id="auth.REAL_NAME" />} name='realname'>
                     <Input
                         prefix={<ContactsOutlined />}
                     />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }} loading={this.state.loading}>
-                        Register
+                        <FormattedMessage id="auth.REGISTER" />
                     </Button>
                 </Form.Item>
             </Form>
@@ -220,7 +233,7 @@ export class LoginButton extends React.Component {
             return (
                 <span>
                     <Button type={type} onClick={this.handleClick}>
-                        Login/Register
+                        <FormattedMessage id="auth.LOGIN" />/{<FormattedMessage id="auth.REGISTER" />}
                     </Button>
                     <Modal
                         visible={visible}
@@ -228,8 +241,8 @@ export class LoginButton extends React.Component {
                         onOk={this.handleOk}
                         onCancel={this.handleCancel}
                         footer={[
-                            <Button key="toggle" onClick={this.toggle} type='link'>Register now!</Button>,
-                            <Button key="back" onClick={this.handleCancel}>Back</Button>,
+                            <Button key="toggle" onClick={this.toggle} type='link'><FormattedMessage id="auth.REGISTER" />!</Button>,
+                            <Button key="back" onClick={this.handleCancel}><FormattedMessage id="gen.BACK" /></Button>,
                         ]}
                     >
                         <NormalLoginForm onComplete={this.onComplete}></NormalLoginForm>
