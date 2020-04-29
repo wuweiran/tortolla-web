@@ -1,6 +1,6 @@
 import cookie from 'react-cookies';
 
-const cookieOptions = { path: "/" };
+const cookieOptions = { path: '/', sameSite: 'lax', secure: false };
 
 export const loginUser = () => {
     return cookie.load('current-user');
@@ -15,15 +15,8 @@ export const saveLoginUserToken = (token) => {
 };
 
 export const saveLoginUserFromToken = (token, callback) => {
-    fetch('/bloggers/get_from_token', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            token: token
-        }),
+    fetch('/bloggers?token=' + token, {
+        method: 'GET'
     })
         .then((response) => response.json())
         .then((responseJson) => {
@@ -46,4 +39,5 @@ export const isLogin = () => {
 
 export const logout = () => {
     cookie.remove('current-user', cookieOptions);
+    cookie.remove('token', cookieOptions);
 };

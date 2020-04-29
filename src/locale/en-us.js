@@ -1,5 +1,7 @@
 const en_US = {
     'gen.BACK': "Back",
+    'gen.CANCEL': "Cancel",
+    'gen.CONFIRM': "Confirm",
     'nav.HOME': "Home",
     'nav.EXPLORE': "Explore",
     'nav.LATEST': "Latest",
@@ -16,6 +18,14 @@ const en_US = {
     'auth.REMEMBER': "Remember me",
     'auth.PASSWORD_CONFIRM': "Confirm password",
     'auth.REAL_NAME': "Real name",
+    'post.act.like': "I like this",
+    'post.act.dislike': "I dislike this",
+    'post.act.fav': "Add to my favorite",
+    'post.act.manage': "Manage this post",
+    'post.act.edit': "Edit",
+    'post.act.delete': "Delete",
+    'post.act.delete.confirm': "Do you want to delete this post?",
+    'post.act.delete.confirm.title': "Post deleting confirmation",
     //... ...
 }
 export default en_US;

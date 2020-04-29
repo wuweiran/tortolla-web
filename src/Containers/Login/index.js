@@ -120,7 +120,7 @@ class NormalRegisterForm extends React.Component {
             body: JSON.stringify({
                 username: values.username,
                 password: values.password,
-                realname: values.realname,
+                realName: values.realName,
             }),
         })
             .then((response) => response.json())
@@ -186,7 +186,7 @@ class NormalRegisterForm extends React.Component {
                         prefix={<CheckOutlined />}
                     />
                 </Form.Item>
-                <Form.Item label={<FormattedMessage id="auth.REAL_NAME" />} name='realname'>
+                <Form.Item label={<FormattedMessage id="auth.REAL_NAME" />} name='realName'>
                     <Input
                         prefix={<ContactsOutlined />}
                     />

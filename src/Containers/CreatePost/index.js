@@ -2,7 +2,9 @@ import React from 'react';
 import { Form, Input, Button, message } from 'antd';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import '@ckeditor/ckeditor5-build-classic/build/translations/zh-cn';
 import { loadLoginUserToken, isLogin } from '../../User';
+import { loadLocalePref } from '../../locale';
 
 export class NormalPostForm extends React.Component {
 
@@ -42,7 +44,7 @@ export class NormalPostForm extends React.Component {
     render() {
         return (
             <Form onFinish={this.onFinish}>
-                <Form.Item name='title' rules={[{ required: true, min: 5, message: 'Length < 5!' }]}>
+                <Form.Item name='title' rules={[{ required: true, min: 5 }]}>
                     <Input
                         placeholder="My Post Title"
                     />
@@ -52,11 +54,11 @@ export class NormalPostForm extends React.Component {
                         return editor.getData();
                     }}
                     valuePropName='data'
-                    rules={[{ required: true, message: 'Must write something!' }]}>
+                    rules={[{ required: true}]}>
                     <CKEditor
                         editor={ClassicEditor}
                         config={{
-                            language: 'en-us',
+                            language: loadLocalePref(),
                             ckfinder: {
                                 uploadUrl: "/posts/upload_image"
                             },

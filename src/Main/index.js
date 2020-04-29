@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import { Layout, Menu, Empty, Select, ConfigProvider } from 'antd';
-import { HomeOutlined, ShakeOutlined, CompassOutlined, FileAddOutlined, GlobalOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, ShakeOutlined, CompassOutlined, FileAddOutlined, GlobalOutlined, UserOutlined, InfoOutlined, StarOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LoginButton } from '../Containers/Login';
 import Home from '../Containers/Home';
 import Explore from '../Containers/Explore';
@@ -15,6 +15,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import momentLocale from 'moment/locale/zh-cn';
 import { IntlProvider, FormattedMessage } from 'react-intl';
+import { saveLocalePref, loadLocalePref } from "../locale"
 import zh_CN from "../locale/zh-cn.js"
 import en_US from "../locale/en-us.js"
 
@@ -48,16 +49,22 @@ export default class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            locale: "en-us",
+        let localeString = loadLocalePref();
+        if (localeString === undefined) {
+            localeString = "en-us";
+            saveLocalePref(localeString);
         }
-        moment.locale('en-us');
+        this.state = {
+            locale: localeString,
+        }
+        moment.locale(localeString);
     }
 
     changeLocale = e => {
         this.setState({
             locale: e.value,
         });
+        saveLocalePref(e.value);
         moment.locale(e.value);
     }
 
@@ -116,49 +123,44 @@ export default class Main extends React.Component {
                                 >
                                     {isLogin() ?
                                         <Menu.SubMenu
-                                            title={
-                                                <span>
-                                                    <UserOutlined />
-                                                    {loginUser().username}
-                                                </span>}
+                                            title={loginUser().username}
+                                            icon={<UserOutlined />}
                                         >
-                                            <Menu.Item>
+                                            <Menu.Item icon={<InfoOutlined />}>
                                                 <Link to={'/user/info'}>
                                                     <FormattedMessage id="nav.user.INFO" />
                                                 </Link>
                                             </Menu.Item>
-                                            <Menu.Item>
+                                            <Menu.Item icon={<StarOutlined />}>
                                                 <Link to={'/user/fav'}>
                                                     <FormattedMessage id="nav.user.FAV" />
                                                 </Link>
                                             </Menu.Item>
                                             <Menu.Divider />
-                                            <Menu.Item key="logout"><FormattedMessage id="nav.user.LOGOUT" /></Menu.Item>
+                                            <Menu.Item key="logout" icon={<LogoutOutlined />}>
+                                                <FormattedMessage id="nav.user.LOGOUT" />
+                                            </Menu.Item>
                                         </Menu.SubMenu> :
                                         <Menu.Item>
                                             <LoginButton type="link" />
                                         </Menu.Item>}
                                     <Menu.Item key='/home'>
-                                        <Link to={'/home'}>
-                                            <HomeOutlined />
+                                        <Link to={'/home'} icon={<HomeOutlined />}>
                                             <FormattedMessage id="nav.HOME" />
                                         </Link>
                                     </Menu.Item>
-                                    <Menu.Item key='/post/explore' disabled={true}>
+                                    <Menu.Item key='/post/explore' disabled={true} icon={<CompassOutlined />}>
                                         <Link to={'/post/explore'}>
-                                            <CompassOutlined />
                                             <FormattedMessage id="nav.EXPLORE" />
                                         </Link>
                                     </Menu.Item>
-                                    <Menu.Item key='/post/latest'>
+                                    <Menu.Item key='/post/latest' icon={<ShakeOutlined />}>
                                         <Link to={'/post/latest'}>
-                                            <ShakeOutlined />
                                             <FormattedMessage id="nav.LATEST" />
                                         </Link>
                                     </Menu.Item>
-                                    <Menu.Item key={'/post/create'}>
+                                    <Menu.Item key={'/post/create'} icon={<FileAddOutlined />}>
                                         <Link to={'/post/create'}>
-                                            <FileAddOutlined />
                                             <FormattedMessage id="nav.CREATE_POST" />
                                         </Link>
                                     </Menu.Item>
