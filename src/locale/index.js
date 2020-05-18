@@ -1,10 +1,10 @@
-import cookie from 'react-cookies';
+import cookie from "react-cookies";
 
-const cookieOptions = { path: '/', sameSite: 'lax', secure: false };
+const cookieOptions = { path: "/", sameSite: "lax", secure: false };
 
 export const loadLocalePref = () => {
-    return cookie.load('locale-pref');
+  return cookie.load("locale-pref");
 };
 export const saveLocalePref = (localeString) => {
-    return cookie.save('locale-pref', localeString, cookieOptions);
+  return cookie.save("locale-pref", localeString, cookieOptions);
 };
