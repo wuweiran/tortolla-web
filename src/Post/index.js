@@ -16,18 +16,21 @@ import { FormattedMessage } from "react-intl";
 import { loginUser, isLogin } from "../User";
 
 export class NormalPost extends React.Component {
-  unmounted = false;
-
-  state = {
-    loading: true,
-    authorName: "",
-    title: "",
-    createdTime: "",
-    content: "",
-    authorId: -1,
-    deleteModalVisible: false,
-    deleteModalConfirmLoading: false,
-  };
+  constructor(props) {
+    super(props);
+    this.self = React.createRef();
+    this.unmounted = false;
+    this.state = {
+      loading: true,
+      authorName: "",
+      title: "",
+      createdTime: "",
+      content: "",
+      authorId: -1,
+      deleteModalVisible: false,
+      deleteModalConfirmLoading: false,
+    };
+  }
 
   componentDidMount = () => {
     let t = this;
@@ -68,7 +71,7 @@ export class NormalPost extends React.Component {
   };
 
   componentDidUpdate = () => {
-    let domNode = ReactDOM.findDOMNode(this.refs.self);
+    let domNode = this.self.current;
     let elements = domNode.querySelectorAll("figure.image");
     for (let i = 0; i < elements.length; i++) {
       let element = elements.item(i);
@@ -171,36 +174,37 @@ export class NormalPost extends React.Component {
     );
     const momentVal = moment(this.state.createdTime);
     return (
-      <Card
-        title={
-          <Card.Meta
-            title={this.state.title}
-            description={this.state.authorName}
-          />
-        }
-        extra={
-          <Tooltip title={momentVal.format("YYYY-MM-DD HH:mm:ss")}>
-            <span>{momentVal.fromNow()}</span>
-          </Tooltip>
-        }
-        actions={[
-          <Tooltip title={<FormattedMessage id="post.act.like" />}>
-            <LikeOutlined key="like" />
-          </Tooltip>,
-          <Tooltip title={<FormattedMessage id="post.act.dislike" />}>
-            <DislikeOutlined key="dislike" />
-          </Tooltip>,
-          <Tooltip title={<FormattedMessage id="post.act.fav" />}>
-            <StarOutlined key="fav" />
-          </Tooltip>,
-          manageMenu,
-        ]}
-        ref="self"
-      >
-        <Skeleton loading={this.state.loading} active={true}>
-          <p dangerouslySetInnerHTML={{ __html: this.state.content }}></p>
-        </Skeleton>
-      </Card>
+      <div ref={this.self}>
+        <Card
+          title={
+            <Card.Meta
+              title={this.state.title}
+              description={this.state.authorName}
+            />
+          }
+          extra={
+            <Tooltip title={momentVal.format("YYYY-MM-DD HH:mm:ss")}>
+              <span>{momentVal.fromNow()}</span>
+            </Tooltip>
+          }
+          actions={[
+            <Tooltip title={<FormattedMessage id="post.act.like" />}>
+              <LikeOutlined key="like" />
+            </Tooltip>,
+            <Tooltip title={<FormattedMessage id="post.act.dislike" />}>
+              <DislikeOutlined key="dislike" />
+            </Tooltip>,
+            <Tooltip title={<FormattedMessage id="post.act.fav" />}>
+              <StarOutlined key="fav" />
+            </Tooltip>,
+            manageMenu,
+          ]}
+        >
+          <Skeleton loading={this.state.loading} active={true}>
+            <p dangerouslySetInnerHTML={{ __html: this.state.content }}></p>
+          </Skeleton>
+        </Card>
+      </div>
     );
   }
 }

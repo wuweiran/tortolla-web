@@ -57,7 +57,7 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
     let localeString = loadLocalePref();
-    if (localeString === undefined) {
+    if (typeof localeString === 'undefined') {
       localeString = "en-us";
       saveLocalePref(localeString);
     }
