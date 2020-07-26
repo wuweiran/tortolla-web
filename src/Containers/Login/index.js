@@ -95,30 +95,15 @@ class NormalLoginForm extends React.Component {
 
 class NormalRegisterForm extends React.Component {
   state = {
-    confirmDirty: false,
     loading: false,
   };
-
-  handleConfirmBlur = (e) => {
-    const { value } = e.target;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
-  compareToFirstPassword = (_rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
+  
+  validateToNextPassword = (rule, value) => {
     const { form } = this.props;
     if (value && this.state.confirmDirty) {
       form.validateFields(["confirm"], { force: true });
     }
-    callback();
+    Promise.resolve();
   };
 
   onFinish = (values) => {
@@ -176,9 +161,6 @@ class NormalRegisterForm extends React.Component {
               required: true,
               message: "Please input your Password!",
             },
-            {
-              validator: this.validateToNextPassword,
-            },
           ]}
         >
           <Input.Password prefix={<LockOutlined />} />
@@ -187,18 +169,23 @@ class NormalRegisterForm extends React.Component {
           label={<FormattedMessage id="auth.PASSWORD_CONFIRM" />}
           hasFeedback
           name="confirm"
+          dependencies={['password']}
           rules={[
             {
               required: true,
               message: "Please confirm your password!",
             },
-            {
-              validator: this.compareToFirstPassword,
-            },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject('The two passwords that you entered do not match!');
+              },
+            }),
           ]}
         >
           <Input.Password
-            onBlur={this.handleConfirmBlur}
             prefix={<CheckOutlined />}
           />
         </Form.Item>
