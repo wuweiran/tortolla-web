@@ -26,6 +26,9 @@ const en_US = {
   "post.act.delete": "Delete",
   "post.act.delete.confirm": "Do you want to delete this post?",
   "post.act.delete.confirm.title": "Post deleting confirmation",
+  "post.title": "Title",
+  "post.content": "Content",
+  "post.act.create": "Post",
   //... ...
 };
 export default en_US;

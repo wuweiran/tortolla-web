@@ -26,6 +26,9 @@ const zh_CN = {
   "post.act.delete": "删除",
   "post.act.delete.confirm": "删帖确认",
   "post.act.delete.confirm.title": "你想要删除此帖吗？",
+  "post.title": "标题",
+  "post.content": "内容",
+  "post.act.create": "发帖",
   //... ...
 };
 export default zh_CN;

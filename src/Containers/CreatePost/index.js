@@ -1,10 +1,11 @@
 import React from "react";
 import { Form, Input, Button, message } from "antd";
-import CKEditor from "@ckeditor/ckeditor5-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "@ckeditor/ckeditor5-build-classic/build/translations/zh-cn";
 import { loadLoginUserToken, isLogin } from "../../User";
 import { loadLocalePref } from "../../locale";
+import { FormattedMessage } from "react-intl";
 
 export class NormalPostForm extends React.Component {
   state = {
@@ -43,11 +44,16 @@ export class NormalPostForm extends React.Component {
   render() {
     return (
       <Form onFinish={this.onFinish}>
-        <Form.Item name="title" rules={[{ required: true, min: 5 }]}>
+        <Form.Item
+          name="title"
+          label={<FormattedMessage id="post.title" />}
+          rules={[{ required: true, min: 5 }]}
+        >
           <Input placeholder="My Post Title" />
         </Form.Item>
         <Form.Item
           name="body"
+          label={<FormattedMessage id="post.content" />}
           getValueFromEvent={(_event, editor) => {
             return editor.getData();
           }}
@@ -62,19 +68,19 @@ export class NormalPostForm extends React.Component {
                 uploadUrl: "/posts/upload_image",
               },
             }}
-            onInit={(editor) => {
+            onReady={(editor) => {
               // You can store the "editor" and use when it is needed.
-              //console.log('Editor is ready to use!', editor);
+              // console.log("Editor is ready to use!", editor);
             }}
             onChange={(event, editor) => {
-              //const data = editor.getData();
-              //console.log({ event, editor, data });
+              // const data = editor.getData();
+              // console.log({ event, editor, data });
             }}
             onBlur={(event, editor) => {
-              //console.log('Blur.', editor);
+              // console.log("Blur.", editor);
             }}
             onFocus={(event, editor) => {
-              //console.log('Focus.', editor);
+              // console.log("Focus.", editor);
             }}
           />
         </Form.Item>
@@ -84,7 +90,7 @@ export class NormalPostForm extends React.Component {
           style={{ width: "100%" }}
           loading={this.state.loading}
         >
-          Post
+          {<FormattedMessage id="post.act.create" />}
         </Button>
       </Form>
     );
